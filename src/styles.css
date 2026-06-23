@@ -1535,6 +1535,7 @@ h2 {
 }
 
 .about-info-glow-card,
+.about-bio-glow-card,
 .about-case-glow-card,
 .about-timeline-glow-card,
 .about-language-glow-card {
@@ -1552,6 +1553,7 @@ h2 {
 }
 
 .about-info-glow-card:hover,
+.about-bio-glow-card:hover,
 .about-case-glow-card:hover,
 .about-timeline-glow-card:hover,
 .about-language-glow-card:hover {
@@ -1564,7 +1566,7 @@ h2 {
 
 .about-info-panel {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 1px;
   overflow: hidden;
   border-radius: inherit;
@@ -1574,7 +1576,7 @@ h2 {
 .about-info-item {
   display: grid;
   align-content: center;
-  min-height: 118px;
+  min-height: 112px;
   padding: 24px;
   background:
     radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.065), transparent 34%),
@@ -1619,6 +1621,7 @@ h2 {
 }
 
 .about-subhead span,
+.about-bio-panel > span,
 .about-language-panel > span {
   color: rgba(196, 210, 218, 0.78);
   font-size: 13px;
@@ -1643,6 +1646,7 @@ h2 {
 
 .about-timeline-card,
 .about-case-card,
+.about-bio-panel,
 .about-language-panel {
   position: relative;
   overflow: hidden;
@@ -1655,6 +1659,7 @@ h2 {
 }
 
 .about-timeline-card::before,
+.about-bio-panel::before,
 .about-case-card::before {
   content: "";
   position: absolute;
@@ -1664,6 +1669,18 @@ h2 {
   width: 2px;
   border-radius: 999px;
   background: linear-gradient(180deg, rgba(255, 126, 39, 0.92), rgba(35, 177, 188, 0.32));
+}
+
+.about-bio-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.about-bio-panel p {
+  margin: 0;
+  color: rgba(191, 204, 211, 0.82);
+  font-size: clamp(15px, 1vw, 17px);
+  line-height: 1.86;
 }
 
 .about-timeline-topline,

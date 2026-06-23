@@ -24,120 +24,170 @@ export const navItems = [
 export const stats = [
   { value: "6+", label: "技能方向", detail: "产品设计 / 游戏设计开发 / UE5 / AI / 网站 / 视频" },
   { value: "5", label: "实践主题", detail: "从课程成果到交互原型展示" },
-  { value: "8+", label: "跨文化观察", detail: "欧洲、日本、俄罗斯等经历" },
+  { value: "3段", label: "跨文化经历", detail: "欧洲多国、日本、俄罗斯观察经历" },
   { value: "2027", label: "深造规划", detail: "伦敦拉夫堡大学工业设计硕士" },
 ];
 
 export const aboutTags = [
   "Product Design",
-  "UX / Interaction",
-  "AI Product",
-  "0->1",
+  "Industrial Design",
+  "UE5 / Game Development",
+  "AI Tools",
+  "Web Development",
   "Experience Design",
-  "System Thinking",
+  "Cross-cultural Vision",
 ];
 
 export const aboutInfo = [
   { label: "姓名", value: "王子仪 / WANG ZIYI" },
-  { label: "求职方向", value: "产品设计 · 体验设计 · AI 产品" },
+  { label: "性别", value: "男" },
+  { label: "年龄", value: "20岁" },
+  { label: "学校", value: "西南交通大学（犀浦校区）" },
+  { label: "专业", value: "产品设计" },
+  { label: "年级", value: "本科大二在读" },
+  { label: "发展方向", value: "产品设计 · 工业设计 · 游戏体验设计 · AI辅助创意 · 网站与交互开发" },
   { label: "邮箱", value: portfolioProfile.email, href: `mailto:${portfolioProfile.email}` },
-  { label: "电话", value: portfolioProfile.phone, href: `tel:${portfolioProfile.phone}` },
-  { label: "微信", value: "fw020914" },
+  { label: "微信", value: "待补充" },
+  { label: "个人网站", value: "wangziyi.cloud", href: "https://wangziyi.cloud" },
 ];
 
 export const education = [
   {
-    school: "悉尼大学",
-    major: "交互设计与电子艺术（硕士在读）",
-    location: "澳大利亚 · 悉尼",
-    period: "2025.02 - 2026.11",
-    description: "聚焦交互系统原型、用户研究、数据驱动体验与 AIGC 交互方向。",
+    school: "西南交通大学",
+    major: "产品设计 本科在读",
+    location: "中国 · 成都 · 犀浦校区",
+    period: "大二在读",
+    description:
+      "目前就读于西南交通大学产品设计专业，系统学习产品设计基础、设计表达、用户需求分析、产品造型、设计调研与数字化设计方法。在专业学习之外，主动拓展 UE5 游戏开发、AI 工具应用、网站开发、网页游戏开发与视频内容创作等方向，尝试将产品设计思维与数字技术结合。",
   },
   {
-    school: "华南农业大学",
-    major: "风景园林（学士）",
-    location: "中国 · 广州",
-    period: "2020.09 - 2024.06",
-    description: "本科阶段积累了空间行为研究、用户动线分析、数据可视化与视觉表达基础。",
+    school: "拉夫堡大学",
+    major: "工业设计硕士 计划入读",
+    location: "英国 · 伦敦",
+    period: "预计 2027",
+    description:
+      "计划于 2027 年前往英国伦敦拉夫堡大学继续攻读工业设计硕士，进一步提升工业设计、用户体验、创新设计方法与国际化设计研究能力。",
   },
+];
+
+export const aboutBio = [
+  "我是一名产品设计专业本科生，目前就读于西南交通大学犀浦校区。相比单一的传统设计方向，我更关注产品设计与数字技术之间的结合，尤其是 UE5 游戏开发、AI 工具应用、网站开发、网页游戏开发以及视频内容创作等方向。",
+  "我希望通过产品设计专业训练，结合数字化工具与跨媒介表达能力，探索工业设计、交互体验、游戏体验和 AI 辅助创意之间的更多可能。未来计划前往英国继续攻读工业设计硕士，进一步拓展国际化设计视野与专业能力。",
+  "我曾于 2015 年前往欧洲意大利、法国、比利时、德国、荷兰等国家游学，2021 年前往日本，2024 年前往俄罗斯。这些跨文化经历让我对不同国家的建筑、城市、产品、艺术与生活方式产生了持续兴趣，也帮助我形成了更开放的审美视野和设计观察能力。",
 ];
 
 export const experiences = [
   {
-    company: "广东省交通规划设计研究院集团有限公司",
-    role: "景观与空间设计实习生",
-    location: "中国 · 广州",
-    period: "2023.07 - 2023.08",
+    company: "欧洲多国游学经历",
+    role: "跨文化观察与艺术设计启蒙",
+    location: "意大利 · 法国 · 比利时 · 德国 · 荷兰",
+    period: "2015",
     bullets: [
-      "参与滨海景观项目调研、方案设计与数据整理。",
-      "结合人流热力图分析优化步行路径与空间体验。",
-      "使用 Rhino 建模，并在 Figma 中制作数字交互看板辅助方案讨论。",
-      "项目成果《汕尾品清湖海堤生态改造》获设计竞赛一等奖并成功落地实施。",
+      "参观欧洲多国城市、建筑、博物馆与公共空间，接触不同文化背景下的艺术与设计表达。",
+      "观察欧洲城市空间、建筑风格、生活方式与视觉文化，拓展个人审美视野。",
+      "通过游学经历建立对国际文化、设计历史与空间体验的初步认知。",
     ],
   },
   {
-    company: "广州市城市规划设计研究院",
-    role: "城市设计实习生",
-    location: "中国 · 广州",
-    period: "2023.01 - 2023.02",
+    company: "日本交流 / 旅行经历",
+    role: "产品细节与城市体验观察",
+    location: "日本",
+    period: "2021",
     bullets: [
-      "通过问卷与访谈获取用户需求，分析社区公共空间问题。",
-      "输出“步行友好 + 文化元素融合”优化方案。",
-      "方案被采纳进入正式设计报告。",
+      "体验日本城市生活、公共空间、消费文化与产品细节设计。",
+      "关注日本设计中对功能、秩序、服务体验与用户细节的处理方式。",
+      "加深对亚洲设计文化、用户体验和生活方式设计的理解。",
+    ],
+  },
+  {
+    company: "俄罗斯交流 / 旅行经历",
+    role: "文化、建筑与城市氛围观察",
+    location: "俄罗斯",
+    period: "2024",
+    bullets: [
+      "观察俄罗斯城市建筑、历史文化、艺术氛围与公共空间特征。",
+      "通过跨文化体验增强对不同国家审美体系和生活方式的理解。",
+      "将旅行观察转化为未来产品设计、场景设计与视觉表达中的灵感来源。",
+    ],
+  },
+  {
+    company: "数字创作与技术学习实践",
+    role: "UE5 / AI / 网站开发 / 网页游戏开发",
+    location: "持续学习中",
+    period: "持续学习中",
+    bullets: [
+      "学习 UE5 游戏开发流程，尝试进行场景搭建、材质应用、基础交互和游戏原型制作。",
+      "使用 AI 工具辅助创意发散、文案整理、学习规划、设计表达与项目构思。",
+      "学习网站开发与网页游戏开发，探索网页交互、数字展示和轻量级游戏体验设计。",
+      "通过视频剪辑能力对项目过程、游戏 Demo 和设计内容进行展示包装。",
     ],
   },
 ];
 
 export const aboutProjects = [
   {
-    title: "代号模拟池",
-    subtitle: "AI 内容流量模拟工具",
-    category: "AI Product / UX",
+    title: "UE5 游戏开发练习",
+    subtitle: "游戏场景与交互原型设计",
+    category: "Game / Interaction Design",
     description:
-      "从 0 到 1 设计 AI 内容评估产品，通过 LLM 与规则模型模拟内容发布后的流量表现。构建 6 维度内容评分体系与流量映射逻辑，完成 PRD、产品方案设计、信息架构与 Web MVP 验证。",
+      "基于 Unreal Engine 5 进行游戏开发学习，尝试完成场景搭建、光照调试、材质应用、基础蓝图逻辑和交互功能设计。在实践中关注游戏空间氛围、玩家体验路径、场景沉浸感与基础玩法反馈，探索产品设计思维在游戏体验中的应用。",
   },
   {
-    title: "Pet Air",
-    subtitle: "宠物出行产品设计与交互原型",
-    category: "UX / Service Design",
+    title: "AI 辅助创意设计实践",
+    subtitle: "AI 工具应用与创意工作流探索",
+    category: "AI-assisted Design",
     description:
-      "围绕宠物主人航班出行情境，优化信息割裂与流程繁琐问题。经过可用性测试后，用户满意度提升 32%，关键流程点击量减少 40%。",
+      "使用 AI 工具进行创意发散、文本整理、设计概念表达、资料归纳与学习辅助。尝试将 AI 融入产品设计、游戏开发、网站开发和视频内容创作流程中，提高前期构思、内容组织和方案表达效率。",
   },
   {
-    title: "FloraSense",
-    subtitle: "情绪感应灯交互产品设计",
-    category: "Interaction Design",
+    title: "网站开发练习",
+    subtitle: "个人展示与网页交互设计",
+    category: "Web Development",
     description:
-      "基于 HR / HRV 生理数据与环境信息，构建情绪感知与动态灯光反馈机制。情绪识别准确率达 82%，舒缓反馈体验满意度提升 35%。",
+      "学习网站开发基础，尝试进行页面结构搭建、视觉布局设计、内容展示和基础交互实现。希望通过网站形式展示个人作品、项目过程、视频内容和游戏原型，建立更完整的数字化作品表达方式。",
+  },
+  {
+    title: "网页游戏开发练习",
+    subtitle: "轻量级游戏交互原型",
+    category: "Web Game Development",
+    description:
+      "围绕网页端游戏开发进行基础学习，理解游戏规则、交互逻辑、用户反馈和页面运行机制。通过网页游戏练习，将创意想法转化为可体验的交互原型，提升逻辑设计、界面表达和技术实现能力。",
+  },
+  {
+    title: "视频剪辑与内容表达",
+    subtitle: "项目展示与视觉叙事",
+    category: "Video Creation",
+    description:
+      "掌握基础视频剪辑流程，能够进行素材整理、节奏剪辑、字幕处理和内容包装。可用于展示游戏 Demo、设计过程、个人项目和创意内容，增强作品表达的完整度与传播效果。",
   },
 ];
 
 export const skillGroups = [
   {
-    title: "产品与体验",
-    items: ["用户研究", "需求分析", "PRD", "信息架构", "交互流程", "用户旅程地图", "服务设计"],
+    title: "产品与设计",
+    items: ["产品设计", "工业设计基础", "用户需求分析", "设计调研", "产品方案表达", "用户体验意识", "交互体验设计", "作品集表达"],
   },
   {
-    title: "设计与原型",
-    items: ["Figma", "Axure", "Adobe Photoshop", "Adobe Illustrator", "高保真界面设计", "交互原型设计"],
+    title: "数字创作与游戏开发",
+    items: ["UE5 游戏开发", "游戏场景搭建", "基础蓝图逻辑", "网页游戏开发", "网站开发", "交互原型制作"],
   },
   {
-    title: "AI 与产品思维",
-    items: ["ChatGPT", "Claude", "DeepSeek", "Manus", "AI 产品逻辑设计", "AIGC 工具体验落地"],
+    title: "AI 与效率工具",
+    items: ["AI 工具运用", "创意发散", "文本整理", "方案构思", "内容优化", "学习辅助", "AI辅助设计表达"],
   },
   {
-    title: "技术基础",
-    items: ["Python（基础）", "SQL（基础）", "JavaScript（基础）", "p5.js"],
+    title: "视频与内容创作",
+    items: ["视频剪辑", "素材整理", "节奏剪辑", "字幕处理", "项目展示视频", "游戏 Demo 展示"],
   },
   {
-    title: "三维与空间",
-    items: ["Rhino", "SketchUp", "AutoCAD"],
+    title: "跨文化与观察能力",
+    items: ["欧洲游学经历", "日本旅行观察", "俄罗斯旅行观察", "国际化视野", "城市空间观察", "文化与生活方式观察"],
   },
 ];
 
 export const languageAndInterests = [
-  { label: "语言能力", value: "英语（流利，可作为工作语言） | 韩语（基础）" },
-  { label: "兴趣方向", value: "摄影 | 陶艺 | 内容创作 | AI 探索" },
+  { label: "语言能力", value: "中文母语 | 英语学习中，未来用于海外学习与专业交流" },
+  { label: "兴趣方向", value: "工业设计 | 游戏开发 | AI 探索 | 视频创作 | 网站开发 | 网页游戏 | 旅行 | 跨文化观察" },
 ];
 
 export const academicOutcomes = [

@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import {
   academicOutcomes,
+  aboutBio,
   aboutInfo,
   aboutProjects,
   aboutTags,
@@ -394,7 +395,7 @@ function AboutDetailSection() {
       <div className="about-detail-header">
         <div>
           <span className="section-kicker">About Profile</span>
-          <h3>产品与体验设计方向，专注 AI 驱动的交互与系统设计。</h3>
+          <h3>产品设计与数字体验方向，关注工业设计、UE5 游戏开发、AI 工具应用与交互体验设计。</h3>
         </div>
         <div className="about-tag-cloud" aria-label="设计方向标签">
           {aboutTags.map((tag, index) => (
@@ -416,6 +417,15 @@ function AboutDetailSection() {
         </div>
       </BorderGlow>
 
+      <BorderGlow {...sharedGlowProps} className="about-bio-glow-card" glowRadius={28}>
+        <div className="about-bio-panel">
+          <span>Bio</span>
+          {aboutBio.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      </BorderGlow>
+
       <div className="about-detail-grid">
         <AboutTimeline title="Education" items={education} />
         <AboutTimeline title="Experience" items={experiences} />
@@ -424,7 +434,7 @@ function AboutDetailSection() {
       <div className="about-case-section">
         <div className="about-subhead">
           <span>Projects</span>
-          <p>从产品逻辑、服务流程到 AI 内容评估，把概念拆成可验证的体验方案。</p>
+          <p>围绕 UE5、AI、网站、网页游戏与视频表达，持续把学习内容转化为可展示的数字作品。</p>
         </div>
         <div className="about-case-list">
           {aboutProjects.map((project) => (
