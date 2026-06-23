@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
   ArrowDown,
+  ArrowRight,
   BookOpen,
   Cpu,
   ExternalLink,
@@ -10,6 +11,7 @@ import {
   Mail,
   MonitorPlay,
   Phone,
+  PlayCircle,
   Send,
   Sparkles,
   X,
@@ -22,6 +24,7 @@ import {
   aboutTags,
   education,
   experiences,
+  featuredProjects,
   languageAndInterests,
   navItems,
   outcomeGalleryItems,
@@ -1002,21 +1005,26 @@ function AcademicOutcomesSection() {
   );
 }
 
-function ProjectVisual({ type }) {
+function ProjectVisual({ project, index }) {
   return (
-    <div className={`project-visual visual-${type}`} aria-hidden="true">
-      <div className="visual-horizon" />
-      <div className="visual-frame">
-        <span />
-        <span />
-        <span />
+    <div className="project-visual" aria-hidden="true">
+      <img
+        src={project.cover}
+        alt=""
+        loading={index < 2 ? "eager" : "lazy"}
+        decoding="async"
+        fetchPriority={index === 0 ? "low" : "auto"}
+      />
+      <div className="project-visual-scrim" />
+      <div className="project-visual-meta">
+        <span>{project.category}</span>
+        <strong>{project.year}</strong>
       </div>
-      <div className="visual-core" />
     </div>
   );
 }
 
-function InteractiveProjectCard({ project, index }) {
+function InteractiveProjectCard({ project, index, onOpen }) {
   const cardRef = useRef(null);
 
   const handlePointerMove = (event) => {
@@ -1058,48 +1066,234 @@ function InteractiveProjectCard({ project, index }) {
   };
 
   return (
-    <div className="project-bento-item" style={{ "--stack-index": index }}>
+    <div
+      className="project-bento-item"
+      style={{ "--stack-index": index, "--project-accent": project.accent }}
+    >
       <BorderGlow
         {...sharedGlowProps}
         animated={index === 0}
         className="project-glow-card project-bento-card"
       >
-        <article
+        <button
+          type="button"
           className="project-card project-bento-shell"
           ref={cardRef}
           onPointerMove={handlePointerMove}
           onPointerLeave={handlePointerLeave}
+          onClick={() => onOpen(project.id)}
         >
-          <ProjectVisual type={project.visualType} />
+          <ProjectVisual project={project} index={index} />
           <div className="project-content">
             <span className="project-index">{String(index + 1).padStart(2, "0")}</span>
             <span className="project-category">{project.category}</span>
             <h3>{project.title}</h3>
-            <p>{project.description}</p>
+            <p>{project.summary}</p>
             <div className="tag-row">
               {project.tags.map((tag) => (
                 <span key={tag}>{tag}</span>
               ))}
             </div>
+            <span className="project-open-label">
+              展开案例
+              <ArrowRight size={18} />
+            </span>
           </div>
-        </article>
+        </button>
       </BorderGlow>
     </div>
   );
 }
 
+function ProjectDetailOverlay({ project, projects: allProjects, onClose, onSelect }) {
+  const overlayRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const currentIndex = allProjects.findIndex((item) => item.id === project.id);
+  const nextProject = allProjects[(currentIndex + 1) % allProjects.length];
+  const heroMedia = project.media[0];
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    const overlay = overlayRef.current;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus({ preventScroll: true });
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      if (event.key !== "Tab" || !overlay) return;
+      const focusable = overlay.querySelectorAll(
+        'a[href], button:not([disabled]), video[controls], [tabindex]:not([tabindex="-1"])',
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
+
+  return createPortal(
+    <div
+      className="project-detail-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${project.title} 项目详情`}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+      ref={overlayRef}
+    >
+      <div className="project-detail-shell" style={{ "--project-accent": project.accent }}>
+        <button
+          className="project-detail-close"
+          type="button"
+          aria-label="关闭项目详情"
+          onClick={onClose}
+          ref={closeButtonRef}
+        >
+          <X size={20} />
+        </button>
+
+        <div className="project-detail-hero">
+          <div className="project-detail-media-frame">
+            {heroMedia.type === "video" ? (
+              <video controls preload="none" poster={heroMedia.poster} aria-label={heroMedia.alt}>
+                <source src={heroMedia.src} type="video/mp4" />
+              </video>
+            ) : (
+              <img src={heroMedia.src} alt={heroMedia.alt} decoding="async" />
+            )}
+          </div>
+          <div className="project-detail-title">
+            <span>{project.category}</span>
+            <h3>{project.title}</h3>
+            <p>{project.subtitle}</p>
+          </div>
+        </div>
+
+        <div className="project-detail-body">
+          <aside className="project-detail-meta">
+            <div>
+              <span>Year</span>
+              <strong>{project.year}</strong>
+            </div>
+            <div>
+              <span>Role</span>
+              <strong>{project.role}</strong>
+            </div>
+            <div className="project-detail-tags">
+              {project.tags.map((tag) => (
+                <span key={tag}>{tag}</span>
+              ))}
+            </div>
+            {project.links.length ? (
+              <div className="project-detail-links">
+                {project.links.map((link) => (
+                  <a href={link.href} target="_blank" rel="noreferrer" key={link.href}>
+                    {link.label}
+                    <ExternalLink size={16} />
+                  </a>
+                ))}
+              </div>
+            ) : null}
+          </aside>
+
+          <div className="project-detail-story">
+            <p className="project-detail-summary">{project.summary}</p>
+            <div className="project-detail-copy-grid">
+              <article>
+                <span>Problem</span>
+                <p>{project.problem}</p>
+              </article>
+              <article>
+                <span>Approach</span>
+                <p>{project.approach}</p>
+              </article>
+              <article>
+                <span>Outcome</span>
+                <p>{project.outcome}</p>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <div className="project-detail-media-list" aria-label="项目媒体">
+          {project.media.map((media, mediaIndex) => (
+            <figure className="project-detail-media-item" key={`${media.src}-${mediaIndex}`}>
+              {media.type === "video" ? (
+                <div className="project-video-wrap">
+                  <video controls preload="none" poster={media.poster} aria-label={media.alt}>
+                    <source src={media.src} type="video/mp4" />
+                  </video>
+                  <span className="project-video-cue">
+                    <PlayCircle size={18} />
+                    视频演示
+                  </span>
+                </div>
+              ) : (
+                <img src={media.src} alt={media.alt} loading={mediaIndex < 2 ? "eager" : "lazy"} decoding="async" />
+              )}
+              <figcaption>{media.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+
+        <div className="project-detail-footer">
+          <button type="button" onClick={() => onSelect(nextProject.id)}>
+            下一项目
+            <strong>{nextProject.title}</strong>
+            <ArrowRight size={18} />
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
 function ProjectsSection() {
+  const [activeProjectId, setActiveProjectId] = useState(null);
+  const activeProject = featuredProjects.find((project) => project.id === activeProjectId);
+
   return (
     <section className="projects section-block" id="projects">
       <div className="section-inner section-heading">
         <div className="section-kicker">精选项目</div>
-        <h2>从引擎场景到网页交互，把创意变成可体验的原型。</h2>
+        <h2>把真实项目展开成案例，而不是只停留在一张作品图。</h2>
       </div>
       <div className="section-inner project-bento-list">
-        {projects.map((project, index) => (
-          <InteractiveProjectCard project={project} index={index} key={project.title} />
+        {featuredProjects.map((project, index) => (
+          <InteractiveProjectCard
+            project={project}
+            index={index}
+            key={project.id}
+            onOpen={setActiveProjectId}
+          />
         ))}
       </div>
+      {activeProject ? (
+        <ProjectDetailOverlay
+          project={activeProject}
+          projects={featuredProjects}
+          onClose={() => setActiveProjectId(null)}
+          onSelect={setActiveProjectId}
+        />
+      ) : null}
     </section>
   );
 }

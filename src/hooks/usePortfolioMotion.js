@@ -213,7 +213,7 @@ function setupSectionReveals(root) {
     const headingItems = [kicker, heading].filter(Boolean);
     const cards = toElements(
       section.querySelectorAll(
-        ".stat-glow-card, .outcome-gallery, .outcome-glow-card, .strength-glow-card, .contact-actions a, .footer-link",
+        ".stat-glow-card, .outcome-gallery, .outcome-glow-card, .project-glow-card, .strength-glow-card, .contact-actions a, .footer-link",
       ),
     );
     const visuals = toElements(section.querySelectorAll(".portrait-glow-card"));

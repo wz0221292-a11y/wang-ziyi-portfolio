@@ -276,6 +276,244 @@ export const outcomeGalleryItems = [
   },
 ];
 
+export const featuredProjects = [
+  {
+    id: "design-flow-ai",
+    title: "DesignFlow AI",
+    subtitle: "AI 产品设计方案生成工具",
+    category: "AI Product / Web App",
+    year: "2026",
+    role: "产品策划 / 前端开发 / AI 工作流设计",
+    summary:
+      "从一句产品想法生成可编辑、可汇报、可导出的设计方案，把背景研究、用户画像、外观设计、CMF、故事板与爆炸图组织成连续工作流。",
+    cover: "/assets/projects/design-flow-ai/cover.webp",
+    accent: "#4f8cff",
+    tags: ["AI 产品", "Web App", "设计工作流", "PPT/PDF 导出"],
+    problem:
+      "产品设计前期经常卡在资料整理、方案结构和汇报表达上，想法很容易停留在零散灵感，难以快速变成完整设计档案。",
+    approach:
+      "围绕设计方案生成流程拆分 7 个关键阶段，设计公开 Demo、登录入口、样例项目和隐私说明，并将 AI 生成内容转化为可继续编辑的项目结构。",
+    outcome:
+      "完成一个已上线的 AI 产品网站，让个人对产品设计、网页开发和 AI 工作流的理解变成真实可访问的产品原型。",
+    media: [
+      {
+        type: "image",
+        src: "/assets/projects/design-flow-ai/detail-01.webp",
+        alt: "DesignFlow AI 网站首屏截图",
+        caption: "已上线的 DesignFlow AI 首页与产品价值表达。",
+      },
+    ],
+    links: [{ label: "访问网站", href: "https://www.design-flow-ai.cloud/" }],
+  },
+  {
+    id: "old-estate",
+    title: "The Old Estate / 归宅",
+    subtitle: "UE5 恐怖游戏空间与叙事原型",
+    category: "UE5 / Game Design",
+    year: "2026",
+    role: "游戏策划 / 空间叙事 / UE5 原型",
+    summary:
+      "围绕老宅探索、箱庭解谜、动态潜行和环境叙事，构建一个强调路线压力、听声辨位与家族故事碎片的恐怖体验原型。",
+    cover: "/assets/projects/old-estate/cover.webp",
+    accent: "#ff6a2a",
+    tags: ["UE5", "关卡流程", "恐怖氛围", "交互原型"],
+    problem:
+      "恐怖游戏不只依赖视觉惊吓，更需要空间节奏、目标压力、资源路线和叙事线索共同形成沉浸感。",
+    approach:
+      "从 GDD 出发拆解终极目标、三阶段探索区域、家族徽章收集、录音带叙事和潜行追逐机制，再在 UE5 中验证走廊、光照和场景压迫感。",
+    outcome:
+      "形成一套从策划文档到 UE5 场景原型的游戏设计实践，展示产品设计思维在游戏空间体验中的迁移。",
+    media: [
+      {
+        type: "image",
+        src: "/assets/projects/old-estate/detail-01.webp",
+        alt: "The Old Estate UE5 原型画面",
+        caption: "UE5 原型中的老宅走廊与光影氛围。",
+      },
+      {
+        type: "image",
+        src: "/assets/projects/old-estate/detail-02.webp",
+        alt: "The Old Estate 游戏设计文档缩略图",
+        caption: "游戏设计文档梳理核心目标、关卡流程与体验结构。",
+      },
+      {
+        type: "image",
+        src: "/assets/projects/old-estate/detail-03.webp",
+        alt: "The Old Estate 参考氛围图",
+        caption: "参考图用于控制材质、空间阴影和压迫感。",
+      },
+      {
+        type: "image",
+        src: "/assets/projects/old-estate/detail-04.webp",
+        alt: "The Old Estate 场景参考图",
+        caption: "以真实空间参考辅助场景细节和路线组织。",
+      },
+    ],
+    links: [],
+  },
+  {
+    id: "habit-planet",
+    title: "习惯星球 / 星伴 AI 水杯",
+    subtitle: "儿童智能饮水与习惯养成系统",
+    category: "Interaction / AI Product",
+    year: "2026",
+    role: "产品概念 / 交互流程 / UI 方案",
+    summary:
+      "面向 3-8 岁儿童，通过 AI 陪伴、饮水监测、星球任务和家长协同，把喝水从被动提醒转化为游戏化习惯养成。",
+    cover: "/assets/projects/habit-planet/cover.webp",
+    accent: "#6ab8ff",
+    tags: ["儿童产品", "AI 陪伴", "习惯养成", "交互设计"],
+    problem:
+      "儿童常常忘记喝水，对饮水量缺少感知；家长反复提醒容易变成催促，影响亲子沟通。",
+    approach:
+      "建立儿童、家长、看护者三类角色，围绕提醒、动作识别、进度反馈、任务奖励和家长端报告设计完整闭环。",
+    outcome:
+      "输出产品定位、功能系统、交互流程、产品形态和家长端界面，使硬件、App 与情感化反馈形成统一体验。",
+    media: [
+      {
+        type: "image",
+        src: "/assets/projects/habit-planet/detail-01.webp",
+        alt: "星伴 AI 水杯 UI 与产品方案",
+        caption: "水杯端与家长端界面共同组成饮水习惯闭环。",
+      },
+      {
+        type: "image",
+        src: "/assets/projects/habit-planet/detail-03.webp",
+        alt: "习惯星球项目文档",
+        caption: "从项目概述到用户痛点，先完成产品逻辑定义。",
+      },
+      {
+        type: "image",
+        src: "/assets/projects/habit-planet/detail-04.webp",
+        alt: "星伴 AI 水杯形态草图",
+        caption: "产品草图探索儿童水杯的握持、屏幕和可爱感。",
+      },
+      {
+        type: "image",
+        src: "/assets/projects/habit-planet/detail-06.webp",
+        alt: "星伴 AI 水杯细节图",
+        caption: "通过产品形态和界面反馈让饮水过程变得可感知。",
+      },
+    ],
+    links: [],
+  },
+  {
+    id: "market-miniapp",
+    title: "地摊经济小程序平台",
+    subtitle: "线下集市的数字化入口",
+    category: "Mini Program / Service Design",
+    year: "2026",
+    role: "服务流程 / 信息架构 / 小程序方案",
+    summary:
+      "面向顾客、摊主和管理方，搭建摊位地图、入驻预约、商品预览、收藏评价与运营管理的轻量化平台。",
+    cover: "/assets/projects/market-miniapp/cover.webp",
+    accent: "#ff9a3d",
+    tags: ["小程序", "服务设计", "信息架构", "城市商业"],
+    problem:
+      "线下集市存在摊位信息不透明、顾客查找困难、摊主曝光有限和管理流程分散的问题。",
+    approach:
+      "以三类用户角色为基础，设计地图/列表双视角、摊位预约、商品橱窗、收藏评价和管理审核流程。",
+    outcome:
+      "形成一个把线下人流、摊位经营和管理效率连接起来的小程序服务方案，适合展示信息架构与多角色体验设计能力。",
+    media: [
+      {
+        type: "image",
+        src: "/assets/projects/market-miniapp/detail-01.webp",
+        alt: "地摊经济小程序平台首页方案",
+        caption: "小程序平台定位为线下集市的数字化入口。",
+      },
+      {
+        type: "image",
+        src: "/assets/projects/market-miniapp/detail-02.webp",
+        alt: "地摊经济小程序功能图",
+        caption: "摊位地图、预约、商品预览和评价构成核心功能。",
+      },
+      {
+        type: "image",
+        src: "/assets/projects/market-miniapp/detail-04.webp",
+        alt: "地摊经济小程序界面细节",
+        caption: "通过卡片、地图和筛选降低逛集市的信息成本。",
+      },
+      {
+        type: "image",
+        src: "/assets/projects/market-miniapp/detail-05.webp",
+        alt: "地摊经济小程序流程图",
+        caption: "顾客、摊主、管理方共同构成完整服务生态。",
+      },
+    ],
+    links: [],
+  },
+  {
+    id: "mind-corner",
+    title: "心隅 App",
+    subtitle: "数字时代正念疗愈助手",
+    category: "App Concept / Design Psychology",
+    year: "2026",
+    role: "产品心理学分析 / App 概念 / 界面方向",
+    summary:
+      "面向高压力都市人群，将正念冥想、白噪音、番茄专注、睡前故事与呼吸训练组织为一个轻量的情绪恢复工具。",
+    cover: "/assets/projects/mind-corner/cover.webp",
+    accent: "#88d4c7",
+    tags: ["心理疗愈", "App 设计", "正念", "产品心理学"],
+    problem:
+      "快节奏生活让用户面临注意力分散、睡眠障碍和焦虑压力，传统工具容易只提供内容而缺少情绪进入路径。",
+    approach:
+      "从产品心理学出发分析用户需求，参考正念与白噪音类产品，构建专注、睡眠、情绪释放和自然场景切换的体验模块。",
+    outcome:
+      "完成一个身心健康 App 概念方案，体现从用户心理需求到界面氛围、功能模块和内容调性的设计转化。",
+    media: [
+      {
+        type: "image",
+        src: "/assets/projects/mind-corner/detail-01.webp",
+        alt: "心隅 App 项目展示页",
+        caption: "以柔和自然的视觉语言建立疗愈感和安全感。",
+      },
+    ],
+    links: [],
+  },
+  {
+    id: "sanxingdui-box",
+    title: "Arduino 三星堆文化数字展盒",
+    subtitle: "开源硬件驱动的文化交互装置",
+    category: "Arduino / Interactive Installation",
+    year: "2026",
+    role: "交互装置 / Arduino 编程 / 文化展示",
+    summary:
+      "通过 Arduino、LED 显示屏和物理按键搭建文物图片轮播装置，让观众以按键交互的方式进入三星堆文化叙事。",
+    cover: "/assets/projects/sanxingdui-box/cover.webp",
+    accent: "#d6a55e",
+    tags: ["Arduino", "文化展示", "硬件交互", "视频演示"],
+    problem:
+      "传统文化展示容易停留在静态观看，青少年观众缺少主动参与和可触发的互动入口。",
+    approach:
+      "使用 Arduino 作为控制核心，搭配 LED 显示屏、SD 卡图片读取和物理按键逻辑，实现文物图片切换与信息展示。",
+    outcome:
+      "完成一个低成本、可演示的文化交互装置，把编程、硬件连接和文化传播整合成可观看的视频案例。",
+    media: [
+      {
+        type: "image",
+        src: "/assets/projects/sanxingdui-box/detail-01.webp",
+        alt: "Arduino 三星堆文化数字展盒海报",
+        caption: "项目海报呈现数字展盒的文化主题和装置形态。",
+      },
+      {
+        type: "video",
+        src: "/assets/projects/sanxingdui-box/demo.mp4",
+        poster: "/assets/projects/sanxingdui-box/video-poster.webp",
+        alt: "Arduino 三星堆文化数字展盒演示视频",
+        caption: "演示视频展示按键触发、图片轮播和装置运行状态。",
+      },
+      {
+        type: "image",
+        src: "/assets/projects/sanxingdui-box/detail-02.webp",
+        alt: "Arduino 三星堆文化数字展盒 PPT 缩略图",
+        caption: "PPT 中梳理项目简介、文化背景与技术实现路径。",
+      },
+    ],
+    links: [],
+  },
+];
+
 export const projects = [
   {
     title: "UE5 游戏开发实践",
