@@ -1,5 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+import "./styles.css";
 
 function renderStartupError(error) {
   const root = document.getElementById("root");
@@ -33,10 +35,7 @@ function renderStartupError(error) {
   `;
 }
 
-async function bootstrap() {
-  await import("./styles.css");
-  const { default: App } = await import("./App.jsx");
-
+function bootstrap() {
   createRoot(document.getElementById("root")).render(
     <StrictMode>
       <App />
@@ -44,7 +43,9 @@ async function bootstrap() {
   );
 }
 
-bootstrap().catch((error) => {
+try {
+  bootstrap();
+} catch (error) {
   console.error("Portfolio startup failed", error);
   renderStartupError(error);
-});
+}
