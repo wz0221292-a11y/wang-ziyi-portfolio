@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   ArrowDown,
   BookOpen,
@@ -11,6 +12,7 @@ import {
   Phone,
   Send,
   Sparkles,
+  X,
 } from "lucide-react";
 import {
   academicOutcomes,
@@ -508,9 +510,12 @@ function OutcomeGallery({ items }) {
   const hoverTimerRef = useRef(0);
   const pendingIndexRef = useRef(null);
   const previewClearTimerRef = useRef(0);
+  const previewActivatedAtRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(null);
   const [previewIndex, setPreviewIndex] = useState(null);
+  const [fullscreenIndex, setFullscreenIndex] = useState(null);
   const previewItem = previewIndex !== null ? galleryItems[previewIndex] : null;
+  const fullscreenItem = fullscreenIndex !== null ? galleryItems[fullscreenIndex] : null;
 
   const clearHoverTimer = () => {
     if (hoverTimerRef.current) {
@@ -536,6 +541,7 @@ function OutcomeGallery({ items }) {
 
     if (immediate) {
       activeIndexRef.current = index;
+      previewActivatedAtRef.current = performance.now();
       setPreviewIndex(index);
       setActiveIndex(index);
       return;
@@ -546,6 +552,7 @@ function OutcomeGallery({ items }) {
       activeIndexRef.current = index;
       pendingIndexRef.current = null;
       hoverTimerRef.current = 0;
+      previewActivatedAtRef.current = performance.now();
       setPreviewIndex(index);
       setActiveIndex(index);
     }, 820);
@@ -570,6 +577,16 @@ function OutcomeGallery({ items }) {
     }, 980);
   };
 
+  const openFullscreen = () => {
+    if (!previewItem || previewIndex === null) return;
+    if (performance.now() - previewActivatedAtRef.current < 650) return;
+    setFullscreenIndex(previewIndex);
+  };
+
+  const closeFullscreen = () => {
+    setFullscreenIndex(null);
+  };
+
   useEffect(() => {
     activeIndexRef.current = activeIndex;
   }, [activeIndex]);
@@ -588,6 +605,22 @@ function OutcomeGallery({ items }) {
       window.removeEventListener("pointermove", handleDocumentPointerMove);
     };
   }, [activeIndex]);
+
+  useEffect(() => {
+    if (fullscreenIndex === null) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") closeFullscreen();
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [fullscreenIndex]);
 
   useEffect(() => {
     const gallery = galleryRef.current;
@@ -712,7 +745,29 @@ function OutcomeGallery({ items }) {
         onPointerOver={(event) => event.stopPropagation()}
       >
         {previewItem ? (
-          <div className="outcome-gallery-preview-board" key={previewItem.title}>
+          <div
+            className="outcome-gallery-preview-board"
+            key={previewItem.title}
+            role="button"
+            tabIndex={0}
+            aria-label={`全屏查看${previewItem.title}`}
+            onPointerDown={(event) => {
+              if (event.button !== 0) return;
+              event.preventDefault();
+              event.stopPropagation();
+              openFullscreen();
+            }}
+            onClick={(event) => {
+              event.stopPropagation();
+              openFullscreen();
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                openFullscreen();
+              }
+            }}
+          >
             <OutcomeBoardMedia item={previewItem} index={previewIndex} large />
             <div className="outcome-gallery-preview-caption">
               <span>{String(previewIndex + 1).padStart(2, "0")}</span>
@@ -721,6 +776,31 @@ function OutcomeGallery({ items }) {
           </div>
         ) : null}
       </div>
+      {fullscreenItem
+        ? createPortal(
+            <div
+              className="outcome-lightbox"
+              role="dialog"
+              aria-modal="true"
+              aria-label={`${fullscreenItem.title} 全屏展示`}
+              onClick={closeFullscreen}
+            >
+              <div className="outcome-lightbox-board" onClick={(event) => event.stopPropagation()}>
+                <button className="outcome-lightbox-close" type="button" aria-label="关闭全屏展示" onClick={closeFullscreen}>
+                  <X size={20} strokeWidth={1.8} />
+                </button>
+                <div className="outcome-lightbox-media">
+                  <img src={fullscreenItem.image} alt={fullscreenItem.title} />
+                </div>
+                <div className="outcome-lightbox-caption">
+                  <span>{String(fullscreenIndex + 1).padStart(2, "0")}</span>
+                  <strong>{fullscreenItem.title}</strong>
+                </div>
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   );
 }
