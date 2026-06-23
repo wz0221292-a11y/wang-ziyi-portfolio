@@ -1193,12 +1193,12 @@ h2,
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
-  filter: saturate(1.08) contrast(1.02);
+  object-position: center 48%;
+  filter: saturate(1.08) contrast(1.03) brightness(0.98);
   transform:
     translateX(calc((var(--profile-from-left) - 0.5) * 10px))
-    translateY(calc((var(--profile-from-top) - 0.5) * 8px))
-    scale(1.03);
+    translateY(calc(10px + ((var(--profile-from-top) - 0.5) * 8px)))
+    scale(1.015);
   transition: transform 220ms ease-out;
 }
 
