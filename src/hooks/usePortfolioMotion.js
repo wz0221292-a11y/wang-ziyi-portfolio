@@ -23,6 +23,15 @@ function setupOpeningTimeline() {
   ];
 
   gsap.set(".opening-stage", { autoAlpha: 1 });
+  gsap.set(".opening-mark", { autoAlpha: 0, scale: 0.78, rotate: -16 });
+  gsap.set(".opening-type span", { autoAlpha: 0, yPercent: 120, filter: "blur(8px)" });
+  gsap.set(".opening-type strong", {
+    autoAlpha: 0,
+    yPercent: 112,
+    scaleX: 0.72,
+    filter: "blur(14px)",
+    transformOrigin: "left bottom",
+  });
   gsap.set(".opening-panel", { scaleX: 1 });
   gsap.set(".opening-scan", { scaleX: 0, autoAlpha: 0 });
   gsap.set(".site-header", { y: -72, autoAlpha: 0 });
@@ -59,6 +68,28 @@ function setupOpeningTimeline() {
   });
 
   timeline
+    .to(".opening-mark", {
+      autoAlpha: 1,
+      scale: 1,
+      rotate: 0,
+      duration: 0.82,
+      ease: "back.out(1.2)",
+    }, 0.02)
+    .to(".opening-type span", {
+      autoAlpha: 1,
+      yPercent: 0,
+      filter: "blur(0px)",
+      duration: 0.72,
+      ease: "power3.out",
+    }, 0.12)
+    .to(".opening-type strong", {
+      autoAlpha: 1,
+      yPercent: 0,
+      scaleX: 1,
+      filter: "blur(0px)",
+      duration: 1.05,
+      ease: "expo.out",
+    }, 0.22)
     .to(".hero-vignette", { autoAlpha: 0.74, duration: 1.25, ease: "power2.out" }, 0)
     .to(
       ".hero-portrait-bg",
@@ -108,6 +139,13 @@ function setupOpeningTimeline() {
       },
       1.46,
     )
+    .to([".opening-mark", ".opening-type"], {
+      autoAlpha: 0,
+      y: -32,
+      filter: "blur(8px)",
+      duration: 0.72,
+      ease: "power3.inOut",
+    }, 1.66)
     .to(
       ".hero-portrait-bg",
       {
@@ -204,6 +242,121 @@ function setupOpeningTimeline() {
   return timeline;
 }
 
+function setupStaggeredContentReveals(root) {
+  const groups = [
+    {
+      trigger: ".about-detail-header",
+      items: ".about-detail-header h3, .about-tag",
+      y: 66,
+      stagger: 0.07,
+    },
+    {
+      trigger: ".about-info-panel",
+      items: ".about-info-item",
+      y: 72,
+      stagger: 0.055,
+    },
+    {
+      trigger: ".about-bio-panel",
+      items: ".about-bio-panel > span, .about-bio-panel p",
+      y: 52,
+      stagger: 0.08,
+    },
+    {
+      trigger: ".about-timeline-list",
+      items: ".about-timeline-glow-card",
+      y: 86,
+      stagger: 0.12,
+    },
+    {
+      trigger: ".about-case-list",
+      items: ".about-case-glow-card",
+      y: 86,
+      stagger: 0.1,
+    },
+    {
+      trigger: ".about-skill-groups",
+      items: ".about-skill-group",
+      y: 58,
+      stagger: 0.075,
+    },
+    {
+      trigger: ".about-language-panel",
+      items: ".about-language-panel > span, .about-language-panel p",
+      y: 52,
+      stagger: 0.08,
+    },
+    {
+      trigger: ".outcomes-grid",
+      items: ".outcome-glow-card",
+      y: 98,
+      stagger: 0.12,
+    },
+    {
+      trigger: ".strength-grid",
+      items: ".strength-glow-card",
+      y: 96,
+      stagger: 0.12,
+    },
+    {
+      trigger: ".contact-inner",
+      items: ".contact-actions a, .footer-link",
+      y: 72,
+      stagger: 0.12,
+    },
+  ];
+
+  groups.forEach(({ trigger, items, y, stagger }) => {
+    gsap.utils.toArray(trigger, root).forEach((group) => {
+      const targets = toElements(group.querySelectorAll(items));
+      if (!targets.length) return;
+
+      gsap.set(targets, {
+        autoAlpha: 0,
+        y,
+        scale: 0.97,
+        filter: "blur(10px)",
+      });
+
+      gsap.to(targets, {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        filter: "blur(0px)",
+        duration: 1.08,
+        stagger,
+        ease: "expo.out",
+        scrollTrigger: {
+          trigger: group,
+          start: "top 82%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
+    });
+  });
+
+  gsap.utils.toArray(".about-subhead", root).forEach((subhead) => {
+    const items = toElements(subhead.querySelectorAll("span, p"));
+    if (!items.length) return;
+
+    gsap.set(items, { autoAlpha: 0, y: 38, clipPath: "inset(0 0 100% 0)" });
+    gsap.to(items, {
+      autoAlpha: 1,
+      y: 0,
+      clipPath: "inset(0 0 0% 0)",
+      duration: 0.92,
+      stagger: 0.08,
+      ease: "expo.out",
+      scrollTrigger: {
+        trigger: subhead,
+        start: "top 86%",
+        once: true,
+      },
+    });
+  });
+}
+
 function setupSectionReveals(root) {
   const sections = gsap.utils.toArray(".section-block, .contact", root);
 
@@ -213,7 +366,7 @@ function setupSectionReveals(root) {
     const headingItems = [kicker, heading].filter(Boolean);
     const cards = toElements(
       section.querySelectorAll(
-        ".stat-glow-card, .outcome-gallery, .outcome-glow-card, .project-glow-card, .strength-glow-card, .contact-actions a, .footer-link",
+        ".stat-glow-card, .outcome-gallery",
       ),
     );
     const visuals = toElements(section.querySelectorAll(".portrait-glow-card"));
@@ -381,6 +534,7 @@ function setupProjectBento(root) {
   if (!list || !items.length) return;
 
   gsap.set(items, { autoAlpha: 0, y: 120, scale: 0.96, rotateX: -7 });
+  gsap.set(".project-glow-card", { autoAlpha: 1 });
   gsap.to(items, {
     autoAlpha: 1,
     y: 0,
@@ -526,6 +680,7 @@ export function usePortfolioMotion(rootRef) {
         setupOpeningTimeline();
         setupMarquee(root);
         setupSectionReveals(root);
+        setupStaggeredContentReveals(root);
         setupCharacterReveal(root);
         setupProjectBento(root);
         setupParallax(root);
@@ -546,6 +701,7 @@ export function usePortfolioMotion(rootRef) {
       const top = target.getBoundingClientRect().top + window.scrollY - 112;
       window.scrollTo({ top, behavior: "auto" });
       ScrollTrigger.refresh();
+      ScrollTrigger.update();
     }, 5200);
 
     return () => {

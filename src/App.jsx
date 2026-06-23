@@ -615,7 +615,7 @@ function AboutProfileCard() {
           <div className="profile-card-glare" aria-hidden="true" />
           <img
             className="profile-card-avatar"
-            src="/assets/profile-wang-ziyi-cinematic.webp"
+            src="/assets/profile-wang-ziyi-formal.webp"
             alt=""
             loading="lazy"
             decoding="async"
@@ -628,7 +628,7 @@ function AboutProfileCard() {
           </div>
           <div className="profile-card-user">
             <div className="profile-mini-avatar" aria-hidden="true">
-              <img src="/assets/profile-wang-ziyi-mini.webp" alt="" loading="lazy" />
+              <img src="/assets/profile-wang-ziyi-formal-mini.webp" alt="" loading="lazy" />
             </div>
             <div>
               <strong>@Wang.Ziyi</strong>
@@ -1431,6 +1431,11 @@ export default function App() {
   return (
     <main ref={appRef}>
       <div className="opening-stage" aria-hidden="true">
+        <div className="opening-mark">WZ</div>
+        <div className="opening-type">
+          <span>Portfolio initializing</span>
+          <strong>Wang Ziyi</strong>
+        </div>
         <div className="opening-panel opening-panel-left" />
         <div className="opening-panel opening-panel-right" />
         <div className="opening-scan" />
