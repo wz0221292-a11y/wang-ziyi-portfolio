@@ -2890,10 +2890,12 @@ h2 {
 .project-detail-title h3 {
   margin: 20px 0 0;
   color: #fff6ec;
-  font-size: clamp(54px, 6vw, 118px);
-  line-height: 0.9;
+  font-size: clamp(48px, 5.2vw, 104px);
+  line-height: 0.94;
   font-weight: 640;
   letter-spacing: 0;
+  text-wrap: balance;
+  word-break: keep-all;
 }
 
 .project-detail-title p {
