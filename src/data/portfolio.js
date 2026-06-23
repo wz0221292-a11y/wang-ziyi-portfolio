@@ -47,7 +47,7 @@ export const aboutInfo = [
   { label: "年级", value: "本科大二在读" },
   { label: "发展方向", value: "产品设计 · 工业设计 · 游戏体验设计 · AI辅助创意 · 网站与交互开发" },
   { label: "邮箱", value: portfolioProfile.email, href: `mailto:${portfolioProfile.email}` },
-  { label: "微信", value: "待补充" },
+  { label: "微信", value: "Wz2081854516" },
   { label: "个人网站", value: "wangziyi.cloud", href: "https://wangziyi.cloud" },
 ];
 

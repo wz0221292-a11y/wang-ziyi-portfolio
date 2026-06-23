@@ -390,6 +390,16 @@ function AboutSection() {
 }
 
 function AboutDetailSection() {
+  const getInfoItemClass = (label) => {
+    if (label === "姓名") return " about-info-item-name";
+    if (label === "性别" || label === "年龄") return " about-info-item-compact";
+    if (label === "学校") return " about-info-item-school";
+    if (label === "发展方向") return " about-info-item-direction";
+    if (label === "邮箱") return " about-info-item-email";
+    if (label === "微信" || label === "个人网站") return " about-info-item-contact";
+    return "";
+  };
+
   return (
     <div className="section-inner about-detail" aria-label="关于我详细信息">
       <div className="about-detail-header">
@@ -409,7 +419,7 @@ function AboutDetailSection() {
       <BorderGlow {...sharedGlowProps} className="about-info-glow-card" glowRadius={30}>
         <div className="about-info-panel">
           {aboutInfo.map((item) => (
-            <div className="about-info-item" key={item.label}>
+            <div className={`about-info-item${getInfoItemClass(item.label)}`} key={item.label}>
               <span>{item.label}</span>
               {item.href ? <a href={item.href}>{item.value}</a> : <strong>{item.value}</strong>}
             </div>
