@@ -1193,12 +1193,12 @@ h2,
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 58% center;
+  object-position: center;
   filter: saturate(1.08) contrast(1.02);
   transform:
     translateX(calc((var(--profile-from-left) - 0.5) * 10px))
     translateY(calc((var(--profile-from-top) - 0.5) * 8px))
-    scale(1.08);
+    scale(1.03);
   transition: transform 220ms ease-out;
 }
 
@@ -1230,16 +1230,16 @@ h2,
 .profile-card-details h3 {
   margin: 10px 0 0;
   color: #fff5ec;
-  font-size: clamp(42px, 5vw, 68px);
+  font-size: clamp(38px, 4.4vw, 58px);
   line-height: 0.95;
 }
 
 .profile-card-details p {
   margin: 12px 0 0;
-  max-width: 280px;
-  color: rgba(255, 230, 210, 0.72);
+  max-width: 220px;
+  color: rgba(255, 230, 210, 0.66);
   font-size: 13px;
-  line-height: 1.55;
+  line-height: 1.42;
 }
 
 .profile-card-user {

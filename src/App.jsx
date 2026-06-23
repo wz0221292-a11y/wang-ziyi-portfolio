@@ -459,7 +459,7 @@ function AboutProfileCard() {
           <div className="profile-card-glare" aria-hidden="true" />
           <img
             className="profile-card-avatar"
-            src="/assets/hero-visor-product-designer.jpg"
+            src="/assets/profile-wang-ziyi-cinematic.webp"
             alt=""
             loading="lazy"
             decoding="async"
@@ -472,7 +472,7 @@ function AboutProfileCard() {
           </div>
           <div className="profile-card-user">
             <div className="profile-mini-avatar" aria-hidden="true">
-              <img src="/assets/hero-visor-product-designer-1280.jpg" alt="" loading="lazy" />
+              <img src="/assets/profile-wang-ziyi-mini.webp" alt="" loading="lazy" />
             </div>
             <div>
               <strong>@Wang.Ziyi</strong>
@@ -572,6 +572,21 @@ function OutcomeGallery({ items }) {
 
   useEffect(() => {
     activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
+  useEffect(() => {
+    if (activeIndex === null) return undefined;
+
+    const handleDocumentPointerMove = (event) => {
+      const gallery = galleryRef.current;
+      if (!gallery || gallery.contains(event.target)) return;
+      closePreview();
+    };
+
+    window.addEventListener("pointermove", handleDocumentPointerMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", handleDocumentPointerMove);
+    };
   }, [activeIndex]);
 
   useEffect(() => {
@@ -717,7 +732,7 @@ function AcademicOutcomesSection() {
         <div className="outcomes-showcase">
           <div className="section-heading outcomes-heading">
             <div className="section-kicker">专业所学成果展示</div>
-            <h2>集中展示产品设计课程展版，让研究、造型、模型和表达以作品墙的方式展开。</h2>
+            <h2>集中展示产品设计课程展板，让研究、造型、模型和表达以作品墙的方式展开。</h2>
           </div>
           <OutcomeGallery items={outcomeGalleryItems} />
         </div>

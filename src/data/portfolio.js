@@ -61,36 +61,56 @@ export const academicOutcomes = [
 
 export const outcomeGalleryItems = [
   {
-    title: "产品设计展版 01",
-    image: "",
+    title: "灵境方舱 01",
+    image: "/assets/outcomes/outcome-01-city-healing-cabin-1.webp",
   },
   {
-    title: "产品设计展版 02",
-    image: "",
+    title: "灵境方舱 02",
+    image: "/assets/outcomes/outcome-02-city-healing-cabin-2.webp",
   },
   {
-    title: "产品设计展版 03",
-    image: "",
+    title: "CubeCare 智能药盒 01",
+    image: "/assets/outcomes/outcome-03-cubecare-1.webp",
   },
   {
-    title: "产品设计展版 04",
-    image: "",
+    title: "CubeCare 智能药盒 02",
+    image: "/assets/outcomes/outcome-04-cubecare-2.webp",
   },
   {
-    title: "产品设计展版 05",
-    image: "",
+    title: "竹息-巢光",
+    image: "/assets/outcomes/outcome-05-zhuxi-chaoguang.webp",
   },
   {
-    title: "产品设计展版 06",
-    image: "",
+    title: "钻石切割机顶盒",
+    image: "/assets/outcomes/outcome-06-diamond-console.webp",
   },
   {
-    title: "产品设计展版 07",
-    image: "",
+    title: "盈测管家",
+    image: "/assets/outcomes/outcome-07-profitcast.webp",
   },
   {
-    title: "产品设计展版 08",
-    image: "",
+    title: "设计史展板",
+    image: "/assets/outcomes/outcome-08-design-history.webp",
+  },
+  {
+    title: "青铜觉醒导览手册",
+    image: "/assets/outcomes/outcome-09-bronze-awakening.webp",
+  },
+  {
+    title: "SoftCare 护理机器人 01",
+    image: "/assets/outcomes/outcome-10-softcare-1.webp",
+  },
+  {
+    title: "SoftCare 护理机器人 02",
+    image: "/assets/outcomes/outcome-11-softcare-2.webp",
+  },
+  {
+    title: "模块化休闲步道",
+    image: "/assets/outcomes/outcome-12-modular-path.webp",
+  },
+  {
+    title: "AeroNest 人机工程展板",
+    image: "/assets/outcomes/outcome-13-aeronest.webp",
   },
 ];
 
