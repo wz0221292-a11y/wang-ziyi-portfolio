@@ -136,12 +136,22 @@ export default function Grainient({
     const container = containerRef.current;
     if (!container) return undefined;
 
-    const renderer = new Renderer({
-      webgl: 2,
-      alpha: true,
-      antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 1.25),
-    });
+    let renderer;
+    try {
+      renderer = new Renderer({
+        webgl: 2,
+        alpha: true,
+        antialias: false,
+        dpr: Math.min(window.devicePixelRatio || 1, 1.25),
+      });
+      if (!renderer.gl?.canvas) {
+        throw new Error("WebGL renderer is unavailable.");
+      }
+    } catch (error) {
+      console.warn("Grainient WebGL disabled; using CSS fallback.", error);
+      container.classList.add("is-webgl-disabled");
+      return () => container.classList.remove("is-webgl-disabled");
+    }
 
     const gl = renderer.gl;
     const canvas = gl.canvas;

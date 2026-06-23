@@ -18,6 +18,29 @@
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>王子仪 | 产品设计师</title>
+    <style>
+      #root:empty {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        color: #fff2e8;
+        background:
+          radial-gradient(circle at 72% 28%, rgba(255, 122, 31, 0.22), transparent 32vw),
+          linear-gradient(135deg, #080201, #170703 58%, #050201);
+        font-family: Inter, "SF Pro Display", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      }
+
+      #root:empty::before {
+        content: "王子仪 / Portfolio loading";
+        padding: 14px 18px;
+        border: 1px solid rgba(255, 218, 188, 0.18);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.04);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+        font-size: 14px;
+        letter-spacing: 0.02em;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

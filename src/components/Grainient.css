@@ -4,3 +4,10 @@
   height: 100%;
   overflow: hidden;
 }
+
+.grainient-container.is-webgl-disabled {
+  background:
+    radial-gradient(circle at 58% 20%, rgba(255, 138, 54, 0.2), transparent 28vw),
+    radial-gradient(circle at 28% 72%, rgba(142, 0, 0, 0.24), transparent 32vw),
+    linear-gradient(155deg, #180503, #050201 64%);
+}

@@ -481,22 +481,7 @@ export function usePortfolioMotion(rootRef) {
     const root = rootRef.current;
     if (!root) return undefined;
 
-    const reduceMotion = window.matchMedia(reduceMotionQuery).matches;
-    if (reduceMotion) {
-      gsap.set(".opening-stage", { display: "none" });
-      return undefined;
-    }
-
-    const context = gsap.context(() => {
-      setupOpeningTimeline();
-      setupMarquee(root);
-      setupSectionReveals(root);
-      setupCharacterReveal(root);
-      setupProjectBento(root);
-      setupParallax(root);
-      ScrollTrigger.refresh();
-    }, root);
-    const openingSafetyTimer = window.setTimeout(() => {
+    const revealHeroImmediately = () => {
       gsap.set(".opening-stage", { autoAlpha: 0, display: "none" });
       gsap.set(".site-header", { y: 0, autoAlpha: 1, clearProps: "transform" });
       gsap.set(".hero-spotlight-reveal", { autoAlpha: 0.82, scale: 1, filter: "blur(0px)" });
@@ -526,7 +511,31 @@ export function usePortfolioMotion(rootRef) {
         ],
         { autoAlpha: 1, y: 0, scale: 1, clipPath: "inset(0 0% 0 0)" },
       );
-    }, 4800);
+    };
+    const openingSafetyTimer = window.setTimeout(revealHeroImmediately, 4800);
+
+    const reduceMotion = window.matchMedia(reduceMotionQuery).matches;
+    if (reduceMotion) {
+      revealHeroImmediately();
+      return () => window.clearTimeout(openingSafetyTimer);
+    }
+
+    let context;
+    try {
+      context = gsap.context(() => {
+        setupOpeningTimeline();
+        setupMarquee(root);
+        setupSectionReveals(root);
+        setupCharacterReveal(root);
+        setupProjectBento(root);
+        setupParallax(root);
+        ScrollTrigger.refresh();
+      }, root);
+    } catch (error) {
+      console.error("Portfolio motion setup failed", error);
+      revealHeroImmediately();
+    }
+
     const hashRefreshTimer = window.setTimeout(() => {
       if (!window.location.hash) return;
 
@@ -542,7 +551,7 @@ export function usePortfolioMotion(rootRef) {
     return () => {
       window.clearTimeout(openingSafetyTimer);
       window.clearTimeout(hashRefreshTimer);
-      context.revert();
+      context?.revert();
     };
   }, [rootRef]);
 }

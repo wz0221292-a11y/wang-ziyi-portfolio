@@ -29,7 +29,6 @@ import {
   navItems,
   outcomeGalleryItems,
   portfolioProfile,
-  projects,
   skillGroups,
   stats,
   strengths,
@@ -182,14 +181,14 @@ function HeroSpotlightReveal() {
 }
 
 function MarqueeSection() {
-  const marqueeProjects = [...projects, ...projects, ...projects];
+  const marqueeProjects = [...featuredProjects, ...featuredProjects, ...featuredProjects];
 
   return (
     <section className="marquee-section" aria-label="作品动效预览">
       <div className="marquee-row marquee-row-forward">
         {marqueeProjects.map((project, index) => (
           <div className="marquee-tile" key={`forward-${project.title}-${index}`}>
-            <ProjectVisual type={project.visualType} />
+            <ProjectVisual project={project} index={index} />
             <span>{project.category}</span>
           </div>
         ))}
@@ -197,7 +196,7 @@ function MarqueeSection() {
       <div className="marquee-row marquee-row-reverse">
         {[...marqueeProjects].reverse().map((project, index) => (
           <div className="marquee-tile" key={`reverse-${project.title}-${index}`}>
-            <ProjectVisual type={project.visualType} />
+            <ProjectVisual project={project} index={index} />
             <span>{project.title}</span>
           </div>
         ))}
