@@ -16,10 +16,17 @@ import {
 } from "lucide-react";
 import {
   academicOutcomes,
+  aboutInfo,
+  aboutProjects,
+  aboutTags,
+  education,
+  experiences,
+  languageAndInterests,
   navItems,
   outcomeGalleryItems,
   portfolioProfile,
   projects,
+  skillGroups,
   stats,
   strengths,
 } from "./data/portfolio";
@@ -376,7 +383,132 @@ function AboutSection() {
           </BorderGlow>
         ))}
       </div>
+      <AboutDetailSection />
     </section>
+  );
+}
+
+function AboutDetailSection() {
+  return (
+    <div className="section-inner about-detail" aria-label="关于我详细信息">
+      <div className="about-detail-header">
+        <div>
+          <span className="section-kicker">About Profile</span>
+          <h3>产品与体验设计方向，专注 AI 驱动的交互与系统设计。</h3>
+        </div>
+        <div className="about-tag-cloud" aria-label="设计方向标签">
+          {aboutTags.map((tag, index) => (
+            <span className={`about-tag about-tag-${(index % 5) + 1}`} key={tag}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <BorderGlow {...sharedGlowProps} className="about-info-glow-card" glowRadius={30}>
+        <div className="about-info-panel">
+          {aboutInfo.map((item) => (
+            <div className="about-info-item" key={item.label}>
+              <span>{item.label}</span>
+              {item.href ? <a href={item.href}>{item.value}</a> : <strong>{item.value}</strong>}
+            </div>
+          ))}
+        </div>
+      </BorderGlow>
+
+      <div className="about-detail-grid">
+        <AboutTimeline title="Education" items={education} />
+        <AboutTimeline title="Experience" items={experiences} />
+      </div>
+
+      <div className="about-case-section">
+        <div className="about-subhead">
+          <span>Projects</span>
+          <p>从产品逻辑、服务流程到 AI 内容评估，把概念拆成可验证的体验方案。</p>
+        </div>
+        <div className="about-case-list">
+          {aboutProjects.map((project) => (
+            <BorderGlow {...sharedGlowProps} className="about-case-glow-card" glowRadius={28} key={project.title}>
+              <article className="about-case-card">
+                <div className="about-case-topline">
+                  <div>
+                    <strong>{project.title}</strong>
+                    <span>{project.subtitle}</span>
+                  </div>
+                  <em>{project.category}</em>
+                </div>
+                <p>{project.description}</p>
+              </article>
+            </BorderGlow>
+          ))}
+        </div>
+      </div>
+
+      <div className="about-skills-section">
+        <div className="about-subhead">
+          <span>Skills</span>
+          <p>覆盖产品研究、原型表达、AI 工作流、基础开发与空间工具。</p>
+        </div>
+        <div className="about-skill-groups">
+          {skillGroups.map((group) => (
+            <div className="about-skill-group" key={group.title}>
+              <h4>{group.title}</h4>
+              <div className="about-skill-tags">
+                {group.items.map((item) => (
+                  <span key={item}>{item}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <BorderGlow {...sharedGlowProps} className="about-language-glow-card" glowRadius={24}>
+        <div className="about-language-panel">
+          <span>Languages & Interests</span>
+          {languageAndInterests.map((item) => (
+            <p key={item.label}>
+              <strong>{item.label}</strong>
+              {item.value}
+            </p>
+          ))}
+        </div>
+      </BorderGlow>
+    </div>
+  );
+}
+
+function AboutTimeline({ title, items }) {
+  return (
+    <div className="about-timeline-block">
+      <div className="about-subhead">
+        <span>{title}</span>
+      </div>
+      <div className="about-timeline-list">
+        {items.map((item) => (
+          <BorderGlow {...sharedGlowProps} className="about-timeline-glow-card" glowRadius={24} key={`${item.school ?? item.company}-${item.period}`}>
+            <article className="about-timeline-card">
+              <div className="about-timeline-topline">
+                <div>
+                  <strong>{item.school ?? item.company}</strong>
+                  <span>{item.major ?? item.role}</span>
+                </div>
+                <em>{item.period}</em>
+              </div>
+              <p className="about-timeline-location">{item.location}</p>
+              {item.description ? <p>{item.description}</p> : null}
+              {item.bullets ? (
+                <ul>
+                  {item.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </article>
+          </BorderGlow>
+        ))}
+      </div>
+    </div>
   );
 }
 

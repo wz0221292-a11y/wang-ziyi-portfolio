@@ -28,6 +28,118 @@ export const stats = [
   { value: "2027", label: "深造规划", detail: "伦敦拉夫堡大学工业设计硕士" },
 ];
 
+export const aboutTags = [
+  "Product Design",
+  "UX / Interaction",
+  "AI Product",
+  "0->1",
+  "Experience Design",
+  "System Thinking",
+];
+
+export const aboutInfo = [
+  { label: "姓名", value: "王子仪 / WANG ZIYI" },
+  { label: "求职方向", value: "产品设计 · 体验设计 · AI 产品" },
+  { label: "邮箱", value: portfolioProfile.email, href: `mailto:${portfolioProfile.email}` },
+  { label: "电话", value: portfolioProfile.phone, href: `tel:${portfolioProfile.phone}` },
+  { label: "微信", value: "fw020914" },
+];
+
+export const education = [
+  {
+    school: "悉尼大学",
+    major: "交互设计与电子艺术（硕士在读）",
+    location: "澳大利亚 · 悉尼",
+    period: "2025.02 - 2026.11",
+    description: "聚焦交互系统原型、用户研究、数据驱动体验与 AIGC 交互方向。",
+  },
+  {
+    school: "华南农业大学",
+    major: "风景园林（学士）",
+    location: "中国 · 广州",
+    period: "2020.09 - 2024.06",
+    description: "本科阶段积累了空间行为研究、用户动线分析、数据可视化与视觉表达基础。",
+  },
+];
+
+export const experiences = [
+  {
+    company: "广东省交通规划设计研究院集团有限公司",
+    role: "景观与空间设计实习生",
+    location: "中国 · 广州",
+    period: "2023.07 - 2023.08",
+    bullets: [
+      "参与滨海景观项目调研、方案设计与数据整理。",
+      "结合人流热力图分析优化步行路径与空间体验。",
+      "使用 Rhino 建模，并在 Figma 中制作数字交互看板辅助方案讨论。",
+      "项目成果《汕尾品清湖海堤生态改造》获设计竞赛一等奖并成功落地实施。",
+    ],
+  },
+  {
+    company: "广州市城市规划设计研究院",
+    role: "城市设计实习生",
+    location: "中国 · 广州",
+    period: "2023.01 - 2023.02",
+    bullets: [
+      "通过问卷与访谈获取用户需求，分析社区公共空间问题。",
+      "输出“步行友好 + 文化元素融合”优化方案。",
+      "方案被采纳进入正式设计报告。",
+    ],
+  },
+];
+
+export const aboutProjects = [
+  {
+    title: "代号模拟池",
+    subtitle: "AI 内容流量模拟工具",
+    category: "AI Product / UX",
+    description:
+      "从 0 到 1 设计 AI 内容评估产品，通过 LLM 与规则模型模拟内容发布后的流量表现。构建 6 维度内容评分体系与流量映射逻辑，完成 PRD、产品方案设计、信息架构与 Web MVP 验证。",
+  },
+  {
+    title: "Pet Air",
+    subtitle: "宠物出行产品设计与交互原型",
+    category: "UX / Service Design",
+    description:
+      "围绕宠物主人航班出行情境，优化信息割裂与流程繁琐问题。经过可用性测试后，用户满意度提升 32%，关键流程点击量减少 40%。",
+  },
+  {
+    title: "FloraSense",
+    subtitle: "情绪感应灯交互产品设计",
+    category: "Interaction Design",
+    description:
+      "基于 HR / HRV 生理数据与环境信息，构建情绪感知与动态灯光反馈机制。情绪识别准确率达 82%，舒缓反馈体验满意度提升 35%。",
+  },
+];
+
+export const skillGroups = [
+  {
+    title: "产品与体验",
+    items: ["用户研究", "需求分析", "PRD", "信息架构", "交互流程", "用户旅程地图", "服务设计"],
+  },
+  {
+    title: "设计与原型",
+    items: ["Figma", "Axure", "Adobe Photoshop", "Adobe Illustrator", "高保真界面设计", "交互原型设计"],
+  },
+  {
+    title: "AI 与产品思维",
+    items: ["ChatGPT", "Claude", "DeepSeek", "Manus", "AI 产品逻辑设计", "AIGC 工具体验落地"],
+  },
+  {
+    title: "技术基础",
+    items: ["Python（基础）", "SQL（基础）", "JavaScript（基础）", "p5.js"],
+  },
+  {
+    title: "三维与空间",
+    items: ["Rhino", "SketchUp", "AutoCAD"],
+  },
+];
+
+export const languageAndInterests = [
+  { label: "语言能力", value: "英语（流利，可作为工作语言） | 韩语（基础）" },
+  { label: "兴趣方向", value: "摄影 | 陶艺 | 内容创作 | AI 探索" },
+];
+
 export const academicOutcomes = [
   {
     title: "产品造型与形态推敲",
