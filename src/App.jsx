@@ -59,12 +59,54 @@ const iconMap = {
 
 const outcomeIcons = [Layers3, BookOpen, Cpu, MonitorPlay];
 
+function getPerfProfile() {
+  if (typeof window === "undefined") {
+    return { frameInterval: 1000 / 30, highCostViewport: false };
+  }
+
+  const width = window.innerWidth || 1280;
+  const height = window.innerHeight || 720;
+  const area = width * height;
+  const highCostViewport = width >= 2200 || height >= 1250 || area >= 3_600_000;
+  const ultraViewport = width >= 3200 || height >= 1800 || area >= 7_000_000;
+
+  return {
+    frameInterval: 1000 / (ultraViewport ? 20 : highCostViewport ? 24 : 30),
+    highCostViewport,
+  };
+}
+
+function chunkRevealText(text) {
+  const chars = Array.from(text);
+  const chunks = [];
+  let buffer = "";
+
+  chars.forEach((char) => {
+    buffer += char;
+    const shouldFlush =
+      buffer.length >= 3 ||
+      char === " " ||
+      char === "，" ||
+      char === "。" ||
+      char === "、" ||
+      char === "；";
+
+    if (shouldFlush) {
+      chunks.push(buffer);
+      buffer = "";
+    }
+  });
+
+  if (buffer) chunks.push(buffer);
+  return chunks;
+}
+
 function AnimatedText({ text, className = "" }) {
   return (
     <p className={`about-reveal-text ${className}`.trim()} aria-label={text}>
-      {Array.from(text).map((char, index) => (
-        <span className="reveal-char" aria-hidden="true" key={`${char}-${index}`}>
-          {char === " " ? "\u00A0" : char}
+      {chunkRevealText(text).map((chunk, index) => (
+        <span className="reveal-char" aria-hidden="true" key={`${chunk}-${index}`}>
+          {chunk.replaceAll(" ", "\u00A0")}
         </span>
       ))}
     </p>
@@ -113,13 +155,21 @@ function HeroSpotlightReveal() {
     let frame = 0;
     let isVisible = false;
     let isPageVisible = !document.hidden;
+    let lastFrameTime = 0;
+    const { frameInterval } = getPerfProfile();
 
     const setVars = () => {
       element.style.setProperty("--spotlight-x", `${smooth.x}px`);
       element.style.setProperty("--spotlight-y", `${smooth.y}px`);
     };
 
-    const tick = () => {
+    const tick = (time) => {
+      if (time - lastFrameTime < frameInterval) {
+        frame = window.requestAnimationFrame(tick);
+        return;
+      }
+
+      lastFrameTime = time;
       smooth.x += (mouse.x - smooth.x) * 0.1;
       smooth.y += (mouse.y - smooth.y) * 0.1;
       setVars();
@@ -133,6 +183,7 @@ function HeroSpotlightReveal() {
     const start = () => {
       if (!isVisible || !isPageVisible || frame) return;
       hero.addEventListener("pointermove", handlePointerMove, { passive: true });
+      lastFrameTime = 0;
       frame = window.requestAnimationFrame(tick);
     };
     const stop = () => {
@@ -537,6 +588,8 @@ function AboutTimeline({ title, items }) {
 function AboutProfileCard() {
   const cardRef = useRef(null);
   const settleFrameRef = useRef(0);
+  const pointerFrameRef = useRef(0);
+  const pointerEventRef = useRef(null);
   const enterTimerRef = useRef(0);
 
   const setProfilePointer = (x, y) => {
@@ -563,7 +616,6 @@ function AboutProfileCard() {
     const card = cardRef.current;
     if (!card) return;
 
-    const rect = card.getBoundingClientRect();
     card.classList.add("is-active");
     card.classList.add("is-entering");
     if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
@@ -571,13 +623,29 @@ function AboutProfileCard() {
       card.classList.remove("is-entering");
       enterTimerRef.current = 0;
     }, 180);
-    setProfilePointer(event.clientX - rect.left, event.clientY - rect.top);
+
+    pointerEventRef.current = { clientX: event.clientX, clientY: event.clientY };
+    if (pointerFrameRef.current) return;
+    pointerFrameRef.current = window.requestAnimationFrame(() => {
+      pointerFrameRef.current = 0;
+      const latestCard = cardRef.current;
+      const point = pointerEventRef.current;
+      if (!latestCard || !point) return;
+
+      const rect = latestCard.getBoundingClientRect();
+      setProfilePointer(point.clientX - rect.left, point.clientY - rect.top);
+    });
   };
 
   const handlePointerLeave = () => {
     const card = cardRef.current;
     if (!card) return;
 
+    pointerEventRef.current = null;
+    if (pointerFrameRef.current) {
+      window.cancelAnimationFrame(pointerFrameRef.current);
+      pointerFrameRef.current = 0;
+    }
     setProfilePointer(card.clientWidth / 2, card.clientHeight / 2);
     if (settleFrameRef.current) window.cancelAnimationFrame(settleFrameRef.current);
     settleFrameRef.current = window.requestAnimationFrame(() => {
@@ -596,6 +664,7 @@ function AboutProfileCard() {
 
     return () => {
       window.cancelAnimationFrame(frame);
+      if (pointerFrameRef.current) window.cancelAnimationFrame(pointerFrameRef.current);
       if (settleFrameRef.current) window.cancelAnimationFrame(settleFrameRef.current);
       if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
     };
@@ -788,20 +857,28 @@ function OutcomeGallery({ items }) {
     }
 
     const baseSpeed = 360 / 68;
+    const { frameInterval } = getPerfProfile();
     const state = {
       angle: 0,
       speed: baseSpeed,
       lastTime: performance.now(),
+      lastFrameTime: 0,
       frame: 0,
       visible: false,
       pageVisible: !document.hidden,
     };
 
     const tick = (time) => {
+      if (time - state.lastFrameTime < frameInterval) {
+        state.frame = window.requestAnimationFrame(tick);
+        return;
+      }
+
       const delta = Math.min((time - state.lastTime) / 1000, 0.08);
       const active = activeIndexRef.current;
       const targetSpeed = active === null ? baseSpeed : 0;
       state.lastTime = time;
+      state.lastFrameTime = time;
       const acceleration = active === null ? 1.35 : 2.1;
       state.speed += (targetSpeed - state.speed) * Math.min(delta * acceleration, 1);
       state.angle = (state.angle + state.speed * delta) % 360;
@@ -818,6 +895,7 @@ function OutcomeGallery({ items }) {
     const start = () => {
       if (!state.visible || !state.pageVisible || state.frame) return;
       state.lastTime = performance.now();
+      state.lastFrameTime = 0;
       state.frame = window.requestAnimationFrame(tick);
     };
     const stop = () => {
@@ -1025,22 +1103,31 @@ function ProjectVisual({ project, index }) {
 
 function InteractiveProjectCard({ project, index, onOpen }) {
   const cardRef = useRef(null);
+  const pointerFrameRef = useRef(0);
+  const pointerEventRef = useRef(null);
 
-  const handlePointerMove = (event) => {
+  const updateCardPointer = () => {
     const card = cardRef.current;
-    if (!card) return;
+    const event = pointerEventRef.current;
+    pointerFrameRef.current = 0;
+    if (!card || !event) return;
+
+    const { clientX, clientY } = event;
+    const { highCostViewport } = getPerfProfile();
+    const tiltRange = highCostViewport ? 2.4 : 4.5;
+    const magnetStrength = highCostViewport ? 0.009 : 0.018;
 
     const rect = card.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
     const relativeX = (x / rect.width) * 100;
     const relativeY = (y / rect.height) * 100;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const tiltX = ((y - centerY) / centerY) * -4.5;
-    const tiltY = ((x - centerX) / centerX) * 4.5;
-    const magnetX = (x - centerX) * 0.018;
-    const magnetY = (y - centerY) * 0.018;
+    const tiltX = ((y - centerY) / centerY) * -tiltRange;
+    const tiltY = ((x - centerX) / centerX) * tiltRange;
+    const magnetX = (x - centerX) * magnetStrength;
+    const magnetY = (y - centerY) * magnetStrength;
 
     card.style.setProperty("--project-x", `${relativeX}%`);
     card.style.setProperty("--project-y", `${relativeY}%`);
@@ -1052,10 +1139,24 @@ function InteractiveProjectCard({ project, index, onOpen }) {
     card.style.transform = `translate3d(${magnetX}px, ${magnetY}px, 0px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
   };
 
+  const handlePointerMove = (event) => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    pointerEventRef.current = { clientX: event.clientX, clientY: event.clientY };
+    if (pointerFrameRef.current) return;
+    pointerFrameRef.current = window.requestAnimationFrame(updateCardPointer);
+  };
+
   const handlePointerLeave = () => {
     const card = cardRef.current;
     if (!card) return;
 
+    pointerEventRef.current = null;
+    if (pointerFrameRef.current) {
+      window.cancelAnimationFrame(pointerFrameRef.current);
+      pointerFrameRef.current = 0;
+    }
     card.style.setProperty("--project-tilt-x", "0deg");
     card.style.setProperty("--project-tilt-y", "0deg");
     card.style.setProperty("--project-magnet-x", "0px");
@@ -1063,6 +1164,13 @@ function InteractiveProjectCard({ project, index, onOpen }) {
     card.style.setProperty("--project-glow", "0");
     card.style.transform = "translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg)";
   };
+
+  useEffect(
+    () => () => {
+      if (pointerFrameRef.current) window.cancelAnimationFrame(pointerFrameRef.current);
+    },
+    [],
+  );
 
   return (
     <div

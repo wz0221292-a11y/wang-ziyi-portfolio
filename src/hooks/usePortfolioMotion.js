@@ -3,8 +3,16 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const reduceMotionQuery = "(prefers-reduced-motion: reduce)";
+
+function isHighCostViewport() {
+  if (typeof window === "undefined") return false;
+  const width = window.innerWidth || 1280;
+  const height = window.innerHeight || 720;
+  return width >= 2200 || height >= 1250 || width * height >= 3_600_000;
+}
 
 function toElements(targets) {
   if (!targets) return [];
@@ -243,6 +251,7 @@ function setupOpeningTimeline() {
 }
 
 function setupStaggeredContentReveals(root) {
+  const highCostViewport = isHighCostViewport();
   const groups = [
     {
       trigger: ".about-detail-header",
@@ -313,17 +322,17 @@ function setupStaggeredContentReveals(root) {
 
       gsap.set(targets, {
         autoAlpha: 0,
-        y,
+        y: highCostViewport ? Math.round(y * 0.68) : y,
         scale: 0.97,
-        filter: "blur(10px)",
+        filter: highCostViewport ? "none" : "blur(10px)",
       });
 
       gsap.to(targets, {
         autoAlpha: 1,
         y: 0,
         scale: 1,
-        filter: "blur(0px)",
-        duration: 1.08,
+        filter: highCostViewport ? "none" : "blur(0px)",
+        duration: highCostViewport ? 0.92 : 1.08,
         stagger,
         ease: "expo.out",
         scrollTrigger: {
@@ -359,6 +368,7 @@ function setupStaggeredContentReveals(root) {
 
 function setupSectionReveals(root) {
   const sections = gsap.utils.toArray(".section-block, .contact", root);
+  const highCostViewport = isHighCostViewport();
 
   sections.forEach((section) => {
     const kicker = section.querySelector(".section-kicker");
@@ -377,12 +387,19 @@ function setupSectionReveals(root) {
     );
 
     if (headingItems.length) gsap.set(headingItems, { autoAlpha: 0 });
-    if (cards.length) gsap.set(cards, { autoAlpha: 0, y: 92, scale: 0.96, rotateX: -8 });
+    if (cards.length) {
+      gsap.set(cards, {
+        autoAlpha: 0,
+        y: highCostViewport ? 58 : 92,
+        scale: 0.96,
+        rotateX: highCostViewport ? 0 : -8,
+      });
+    }
     if (visuals.length) {
       gsap.set(visuals, {
         autoAlpha: 0,
-        y: 86,
-        scale: 1.06,
+        y: highCostViewport ? 54 : 86,
+        scale: highCostViewport ? 1.02 : 1.06,
         clipPath: "inset(0 0 100% 0)",
       });
     }
@@ -420,7 +437,7 @@ function setupSectionReveals(root) {
           y: 150,
           scaleX: 0.82,
           scaleY: 0.74,
-          filter: "blur(16px)",
+          filter: highCostViewport ? "blur(4px)" : "blur(16px)",
           clipPath: "inset(0 0 100% 0)",
           transformOrigin: "left bottom",
         },
@@ -431,7 +448,7 @@ function setupSectionReveals(root) {
           scaleY: 1,
           filter: "blur(0px)",
           clipPath: "inset(0 0 0% 0)",
-          duration: 1.28,
+          duration: highCostViewport ? 1.02 : 1.28,
         },
         kicker ? "-=0.42" : 0,
       );
@@ -511,12 +528,11 @@ function setupCharacterReveal(root) {
     if (!chars.length) return;
 
     gsap.set(text, { autoAlpha: 1 });
-    gsap.set(chars, { autoAlpha: 0.38, y: 6, filter: "blur(1.8px)" });
+    gsap.set(chars, { autoAlpha: 0.42, y: 5 });
     gsap.to(chars, {
       autoAlpha: 1,
       y: 0,
-      filter: "blur(0px)",
-      stagger: 0.008,
+      stagger: 0.014,
       ease: "none",
       scrollTrigger: {
         trigger: text,
@@ -532,15 +548,21 @@ function setupProjectBento(root) {
   const list = root.querySelector(".project-bento-list");
   const items = gsap.utils.toArray(".project-bento-item", root);
   if (!list || !items.length) return;
+  const highCostViewport = isHighCostViewport();
 
-  gsap.set(items, { autoAlpha: 0, y: 120, scale: 0.96, rotateX: -7 });
+  gsap.set(items, {
+    autoAlpha: 0,
+    y: highCostViewport ? 72 : 120,
+    scale: 0.96,
+    rotateX: highCostViewport ? 0 : -7,
+  });
   gsap.set(".project-glow-card", { autoAlpha: 1 });
   gsap.to(items, {
     autoAlpha: 1,
     y: 0,
     scale: 1,
     rotateX: 0,
-    duration: 1.24,
+    duration: highCostViewport ? 1.02 : 1.24,
     stagger: 0.16,
     ease: "expo.out",
     scrollTrigger: {
@@ -555,12 +577,16 @@ function setupProjectBento(root) {
     if (visual) {
       gsap.fromTo(
         visual,
-        { scale: 1.08, clipPath: "inset(0 0 100% 0)", filter: "blur(8px)" },
+        {
+          scale: highCostViewport ? 1.025 : 1.08,
+          clipPath: "inset(0 0 100% 0)",
+          filter: highCostViewport ? "none" : "blur(8px)",
+        },
         {
           scale: 1,
           clipPath: "inset(0 0 0% 0)",
-          filter: "blur(0px)",
-          duration: 1.34,
+          filter: highCostViewport ? "none" : "blur(0px)",
+          duration: highCostViewport ? 1.02 : 1.34,
           ease: "expo.out",
           scrollTrigger: {
             trigger: item,
@@ -574,6 +600,22 @@ function setupProjectBento(root) {
 }
 
 function setupParallax(root) {
+  const highCostViewport = isHighCostViewport();
+
+  if (highCostViewport) {
+    gsap.to(".hero-portrait-bg", {
+      yPercent: 2,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".hero",
+        start: "top top",
+        end: "bottom top",
+        scrub: 1,
+      },
+    });
+    return;
+  }
+
   gsap.utils.toArray(".project-visual", root).forEach((visual) => {
     const movingParts = toElements(
       visual.querySelectorAll(".visual-frame, .visual-core, .visual-horizon"),

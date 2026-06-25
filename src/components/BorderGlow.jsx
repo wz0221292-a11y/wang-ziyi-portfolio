@@ -110,6 +110,8 @@ function BorderGlow({
   fillOpacity = 0.5,
 }) {
   const cardRef = useRef(null);
+  const frameRef = useRef(0);
+  const pointerRef = useRef(null);
 
   const getCenterOfElement = useCallback((el) => {
     const { width, height } = el.getBoundingClientRect();
@@ -148,21 +150,48 @@ function BorderGlow({
     [getCenterOfElement],
   );
 
-  const handlePointerMove = useCallback(
-    (e) => {
+  const updatePointerGlow = useCallback(
+    () => {
       const card = cardRef.current;
+      const point = pointerRef.current;
       if (!card) return;
+      if (!point) return;
 
       const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = point.clientX - rect.left;
+      const y = point.clientY - rect.top;
       const edge = getEdgeProximity(card, x, y);
       const angle = getCursorAngle(card, x, y);
 
       card.style.setProperty("--edge-proximity", `${(edge * 100).toFixed(3)}`);
       card.style.setProperty("--cursor-angle", `${angle.toFixed(3)}deg`);
+      frameRef.current = 0;
     },
     [getCursorAngle, getEdgeProximity],
+  );
+
+  const handlePointerMove = useCallback(
+    (e) => {
+      pointerRef.current = { clientX: e.clientX, clientY: e.clientY };
+      if (frameRef.current) return;
+      frameRef.current = requestAnimationFrame(updatePointerGlow);
+    },
+    [updatePointerGlow],
+  );
+
+  const handlePointerLeave = useCallback(() => {
+    pointerRef.current = null;
+    if (frameRef.current) {
+      cancelAnimationFrame(frameRef.current);
+      frameRef.current = 0;
+    }
+  }, []);
+
+  useEffect(
+    () => () => {
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+    },
+    [],
   );
 
   useEffect(() => {
@@ -217,6 +246,7 @@ function BorderGlow({
     <div
       ref={cardRef}
       onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
       className={`border-glow-card ${className}`}
       style={{
         "--card-bg": backgroundColor,

@@ -104,6 +104,21 @@ void main(){
 `;
 
 const ctxMap = new WeakMap();
+const reduceMotionQuery = "(prefers-reduced-motion: reduce)";
+
+function getRenderProfile() {
+  const width = window.innerWidth || 1280;
+  const height = window.innerHeight || 720;
+  const viewportArea = width * height;
+  const highCostViewport = width >= 2200 || height >= 1250 || viewportArea >= 3_600_000;
+  const ultraViewport = width >= 3200 || height >= 1800 || viewportArea >= 7_000_000;
+  const dpr = window.devicePixelRatio || 1;
+
+  return {
+    dpr: Math.min(dpr, ultraViewport ? 0.5 : highCostViewport ? 0.68 : 1),
+    fps: ultraViewport ? 16 : highCostViewport ? 20 : 24,
+  };
+}
 
 export default function Grainient({
   timeSpeed = 0.25,
@@ -136,13 +151,19 @@ export default function Grainient({
     const container = containerRef.current;
     if (!container) return undefined;
 
+    if (window.matchMedia(reduceMotionQuery).matches) {
+      container.classList.add("is-webgl-disabled");
+      return () => container.classList.remove("is-webgl-disabled");
+    }
+
     let renderer;
+    const renderProfile = getRenderProfile();
     try {
       renderer = new Renderer({
         webgl: 2,
         alpha: true,
         antialias: false,
-        dpr: Math.min(window.devicePixelRatio || 1, 1.25),
+        dpr: renderProfile.dpr,
       });
       if (!renderer.gl?.canvas) {
         throw new Error("WebGL renderer is unavailable.");
@@ -214,7 +235,7 @@ export default function Grainient({
     let isPageVisible = !document.hidden;
     const startTime = performance.now();
     let lastRenderTime = 0;
-    const frameInterval = 1000 / 30;
+    let frameInterval = 1000 / renderProfile.fps;
 
     const loop = (time) => {
       if (time - lastRenderTime >= frameInterval) {
