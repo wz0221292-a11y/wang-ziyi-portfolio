@@ -500,6 +500,8 @@ function setupSectionReveals(root) {
 }
 
 function setupMarquee(root) {
+  if (root.querySelector(".marquee-section.is-static")) return;
+
   const rows = gsap.utils.toArray(".marquee-row", root);
 
   rows.forEach((row) => {

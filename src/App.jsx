@@ -59,6 +59,52 @@ const iconMap = {
 
 const outcomeIcons = [Layers3, BookOpen, Cpu, MonitorPlay];
 
+function getLightExperiencePreference() {
+  if (typeof window === "undefined") return false;
+
+  const nav = window.navigator;
+  const width = window.innerWidth || 1280;
+  const height = window.innerHeight || 720;
+  const memory = nav.deviceMemory || 8;
+  const cores = nav.hardwareConcurrency || 8;
+  const saveData = Boolean(nav.connection?.saveData);
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+  const compactViewport = width < 900 || height < 620;
+
+  return (
+    reducedMotion ||
+    saveData ||
+    compactViewport ||
+    coarsePointer ||
+    memory <= 4 ||
+    cores <= 4
+  );
+}
+
+function useLightExperience() {
+  const [isLight, setIsLight] = useState(() => getLightExperiencePreference());
+
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        setIsLight(getLightExperiencePreference());
+      });
+    };
+
+    window.addEventListener("resize", update, { passive: true });
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  return isLight;
+}
+
 function getPerfProfile() {
   if (typeof window === "undefined") {
     return { frameInterval: 1000 / 30, highCostViewport: false };
@@ -232,26 +278,35 @@ function HeroSpotlightReveal() {
 }
 
 function MarqueeSection() {
-  const marqueeProjects = [...featuredProjects, ...featuredProjects, ...featuredProjects];
+  const isLightExperience = useLightExperience();
+  const marqueeProjects = isLightExperience
+    ? featuredProjects
+    : [...featuredProjects, ...featuredProjects];
+  const reverseProjects = isLightExperience ? [] : [...marqueeProjects].reverse();
 
   return (
-    <section className="marquee-section" aria-label="作品动效预览">
+    <section
+      className={`marquee-section${isLightExperience ? " is-static" : ""}`}
+      aria-label="作品动效预览"
+    >
       <div className="marquee-row marquee-row-forward">
         {marqueeProjects.map((project, index) => (
           <div className="marquee-tile" key={`forward-${project.title}-${index}`}>
-            <ProjectVisual project={project} index={index} />
+            <ProjectVisual project={project} index={index} priority={false} />
             <span>{project.category}</span>
           </div>
         ))}
       </div>
-      <div className="marquee-row marquee-row-reverse">
-        {[...marqueeProjects].reverse().map((project, index) => (
-          <div className="marquee-tile" key={`reverse-${project.title}-${index}`}>
-            <ProjectVisual project={project} index={index} />
-            <span>{project.title}</span>
-          </div>
-        ))}
-      </div>
+      {!isLightExperience ? (
+        <div className="marquee-row marquee-row-reverse">
+          {reverseProjects.map((project, index) => (
+            <div className="marquee-tile" key={`reverse-${project.title}-${index}`}>
+              <ProjectVisual project={project} index={index} priority={false} />
+              <span>{project.title}</span>
+            </div>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -726,6 +781,7 @@ function OutcomeBoardMedia({ item, index, large = false }) {
 }
 
 function OutcomeGallery({ items }) {
+  const isLightExperience = useLightExperience();
   const galleryItems = items.length ? items : [];
   const galleryRef = useRef(null);
   const orbitRef = useRef(null);
@@ -851,7 +907,7 @@ function OutcomeGallery({ items }) {
     if (!gallery || !orbit || !galleryItems.length) return undefined;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) {
+    if (reduceMotion || isLightExperience) {
       orbit.style.setProperty("--orbit-angle", "0deg");
       return undefined;
     }
@@ -924,7 +980,7 @@ function OutcomeGallery({ items }) {
       observer.disconnect();
       document.removeEventListener("visibilitychange", handleVisibility);
     };
-  }, [galleryItems.length]);
+  }, [galleryItems.length, isLightExperience]);
 
   useEffect(
     () => () => {
@@ -937,7 +993,7 @@ function OutcomeGallery({ items }) {
   return (
     <div
       ref={galleryRef}
-      className={`outcome-gallery${activeIndex !== null ? " is-interacting" : ""}`}
+      className={`outcome-gallery${activeIndex !== null ? " is-interacting" : ""}${isLightExperience ? " is-static" : ""}`}
       aria-label="专业所学成果图片展示框"
       onPointerMove={activateFromPointer}
       onPointerOver={activateFromPointer}
@@ -1082,15 +1138,15 @@ function AcademicOutcomesSection() {
   );
 }
 
-function ProjectVisual({ project, index }) {
+function ProjectVisual({ project, index, priority = index < 2 }) {
   return (
     <div className="project-visual" aria-hidden="true">
       <img
         src={project.cover}
         alt=""
-        loading={index < 2 ? "eager" : "lazy"}
+        loading={priority ? "eager" : "lazy"}
         decoding="async"
-        fetchPriority={index === 0 ? "low" : "auto"}
+        fetchPriority={priority && index === 0 ? "low" : "auto"}
       />
       <div className="project-visual-scrim" />
       <div className="project-visual-meta">
@@ -1473,7 +1529,7 @@ function DeferredPostHeroBackground() {
     const shell = backgroundRef.current?.closest(".post-hero-shell");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (reduceMotion) return undefined;
+    if (reduceMotion || getLightExperiencePreference()) return undefined;
     if (!shell || !("IntersectionObserver" in window)) {
       setShouldRender(true);
       return undefined;
